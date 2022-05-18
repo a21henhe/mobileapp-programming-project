@@ -4,12 +4,22 @@ public class Tree {
 
     private int id;
     private String name;
-    private int height;
+    private int size;
+    private String auxdata;
 
-    public Tree(int id, String name, int height) {
+    public Tree(int id, String name, int height, String auxdata) {
         this.id = id;
         this.name = name;
-        this.height = height;
+        this.size = height;
+        this.auxdata = auxdata;
+    }
+
+    public String getAuxdata() {
+        return auxdata;
+    }
+
+    public void setAuxdata(String auxdata) {
+        this.auxdata = auxdata;
     }
 
     public int getId() {
@@ -28,12 +38,12 @@ public class Tree {
         this.name = name;
     }
 
-    public int getHeight() {
-        return height;
+    public int getSize() {
+        return size;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setSize(int size) {
+        this.size = size;
     }
 
 

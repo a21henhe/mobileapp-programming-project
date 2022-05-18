@@ -35,7 +35,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     public void onBindViewHolder(@NonNull RecyclerviewAdapter.ViewHolder holder, int position) {
         holder.name.setText(listOfTrees.get(position).getName());
         ImageView imageView = holder.getImage();
-       // new ImageDownloader(imageView).execute(listOfTrees.get(position).auxdata);
+        new ImageDownloader(imageView).execute(listOfTrees.get(position).getAuxdata());
     }
 
     @Override
