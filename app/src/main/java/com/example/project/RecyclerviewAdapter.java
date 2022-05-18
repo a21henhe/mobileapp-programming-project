@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,8 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerviewAdapter.ViewHolder holder, int position) {
         holder.name.setText(listOfTrees.get(position).getName());
+        ImageView imageView = holder.getImage();
+       // new ImageDownloader(imageView).execute(listOfTrees.get(position).auxdata);
     }
 
     @Override
@@ -42,17 +45,21 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
+        ImageView image;
 
         ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             name = itemView.findViewById(R.id.tree_name);
+            image = itemView.findViewById(R.id.tree_img);
         }
 
         @Override
         public void onClick(View view) {
             onClickListener.onClick(listOfTrees.get(getAdapterPosition()));
         }
+
+        public ImageView getImage() {return image;}
     }
 
     public interface OnClickListener{
