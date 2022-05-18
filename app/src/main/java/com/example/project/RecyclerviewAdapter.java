@@ -19,7 +19,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     private OnClickListener onClickListener;
 
 
-    RecyclerviewAdapter(Context context, List<Tree> trees,OnClickListener onClickListener){
+    RecyclerviewAdapter(Context context, List<Tree> trees, OnClickListener onClickListener) {
         this.layoutInflater = LayoutInflater.from(context);
         this.listOfTrees = trees;
         this.onClickListener = onClickListener;
@@ -34,6 +34,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerviewAdapter.ViewHolder holder, int position) {
         holder.name.setText(listOfTrees.get(position).getName());
+        holder.description.setText(String.format("A %s might have a height of %s meters", listOfTrees.get(position).getName(), listOfTrees.get(position).getSize()));
         ImageView imageView = holder.getImage();
         new ImageDownloader(imageView).execute(listOfTrees.get(position).getAuxdata());
     }
@@ -45,12 +46,14 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
+        TextView description;
         ImageView image;
 
         ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             name = itemView.findViewById(R.id.tree_name);
+            description = itemView.findViewById(R.id.tree_desc);
             image = itemView.findViewById(R.id.tree_img);
         }
 
@@ -59,10 +62,12 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
             onClickListener.onClick(listOfTrees.get(getAdapterPosition()));
         }
 
-        public ImageView getImage() {return image;}
+        public ImageView getImage() {
+            return image;
+        }
     }
 
-    public interface OnClickListener{
+    public interface OnClickListener {
         void onClick(Tree tree);
     }
 }

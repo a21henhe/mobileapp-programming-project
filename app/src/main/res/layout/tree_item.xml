@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     tools:ignore="ExtraText"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_marginBottom="50dp">
 
 
     <ImageView
@@ -19,13 +20,13 @@
     <TextView
         android:textSize="24sp"
         android:id="@+id/tree_name"
-        android:text="trädnamn"
+        android:text="@string/tr_dnamn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tree_desc"
-        android:text="träddesc"
+        android:text="@string/tr_ddesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

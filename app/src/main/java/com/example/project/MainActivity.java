@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     RecyclerView recyclerView;
     RecyclerviewAdapter adapter;
     ArrayList<Tree> listOfTrees;
-    private final String JSON_URL =" https://mobprog.webug.se/json-api?login=a21henhe";
+    private final String JSON_URL ="https://mobprog.webug.se/json-api?login=a21henhe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
