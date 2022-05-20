@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     RecyclerView recyclerView;
     RecyclerviewAdapter adapter;
     ArrayList<Tree> listOfTrees;
-    private final String JSON_URL ="https://mobprog.webug.se/json-api?login=a21henhe";
+    String jsonData;
+    Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +37,20 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
         recyclerView = findViewById(R.id.recyclerView);
         listOfTrees = new ArrayList<>();
-
+        gson = new Gson();
 
         adapter = new RecyclerviewAdapter(this, listOfTrees, new RecyclerviewAdapter.OnClickListener() {
             @Override
             public void onClick(Tree tree) {
-                Toast.makeText(MainActivity.this, tree.getName(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MainActivity.this, tree.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, TreeDetailsActivity.class);
+                intent.putExtra("json", gson.toJson(tree));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
-
+        String JSON_URL = "https://mobprog.webug.se/json-api?login=a21henhe";
         new JsonTask(this).execute(JSON_URL);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     @Override
     public void onPostExecute(String json) {
         Log.d("", "testing: " + json);
-
+        jsonData = json;
         Gson gson = new Gson();
 
         Type type = new TypeToken<List<Tree>>() {}.getType();
@@ -66,26 +72,22 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.main_page) {
-            Log.d("", "main page ");
             return true;
         }
 
         if (id == R.id.about_us) {
-            Log.d("", "about us");
+            Intent intent = new Intent(this, AboutUsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
 
