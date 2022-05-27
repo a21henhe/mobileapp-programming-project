@@ -1,42 +1,86 @@
 
 # Rapport
-r
-**Skriv din rapport här!**
 
-_Du kan ta bort all text som finns sedan tidigare_.
+Detta projekt gick ut på att skapa json-data som skulle hämtas från en api och populera en recyclerview med denna data. Projektet använder sig
+utav träd, med ID,Login , namn på trädet, höjden på trädet som "size" och en bildlänk som lagras i auxdata. Appen använder sig sedan av en
+RecyclerviewAdapter för att populera recyclerviewn. För att få bilder att användas konverterade en ImageDownloader (AsyncTask) URLen till bitmap-format.
+Den användes i adaptern i följande metod:
 
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
 
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+
+ @Override
+    public void onBindViewHolder(@NonNull RecyclerviewAdapter.ViewHolder holder, int position) {
+        holder.name.setText(listOfTrees.get(position).getName());
+        holder.description.setText(String.format("A %s might have a height of %s meters", listOfTrees.get(position).getName(), listOfTrees.get(position).getSize()));
+        ImageView imageView = holder.getImage();
+
+        new ImageDownloader(imageView).execute(listOfTrees.get(position).getAuxdata());
     }
-}
+
+
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+Sista raden använder sig utav tasken och skickar in ett specifikt träds position för att hämta auxdata och sedan körs metoden och bilden omvandlas.
 
-![](android.png)
 
-Läs gärna:
+Klassen som representerar ett träd ser ut på följande sätt med tillhörande getters:
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+
+```
+
+       private int id;
+       private String name;
+       private int size;
+       private String auxdata;
+
+       public Tree(int id, String name, int height, String auxdata) {
+           this.id = id;
+           this.name = name;
+           this.size = height;
+           this.auxdata = auxdata;
+       }
+
+```
+
+Följande kod visar knappen upp till höger i menyn, de 3 prickarna, vilket är navigationen mellan mainactivity och about us activity:
+
+
+```
+
+ @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.main_page) {
+            return true;
+        }
+
+        if (id == R.id.about_us) {
+            Intent intent = new Intent(this, AboutUsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+```
+
+Sedan beroende på vilken knapp man klickar på skapas ett intent och en ny activity. Ovan exempel är från mainactivity och har intent ifall man klickar på about us.
+Detta är tvärtom i about us. Detta för att inte skapa onödig process eftersom man redan är inne på den aktiviteten.
+
+
+
+![](startsida.png)
+
+
+![](about.png)
